@@ -398,7 +398,7 @@ int partition(int *arr, int i, int j) {
         }
     }
     swap (arr[i], arr[m]); // Eventually swap the potential pivot point with the original pivot at i.
-    return m;
+    return m; // Mid point
 }
 
 int quickSort (int *arr, int lowestIndex, int highestIndex) {
@@ -418,7 +418,7 @@ int quickSort (int *arr, int lowestIndex, int highestIndex) {
 
 
 /**
- Pros: best case - O(N log N), worst case - O(n^2)
+ Pros: O(N log N)
  Its cool cause its random
  */
 
@@ -426,7 +426,7 @@ int partition_random(int *arr, int i, int j) {
     int r = i + rand()%(j-i+1);
     swap (arr[i], arr[r]); // Swap i with a random pivot
     
-    int p = arr[i]; // Pivot (fixed pivot)
+    int p = arr[i];
     int m = i; // S1 and S2 are initially empty, so potential pivot just dump it at the lowest index
     for (int k = i+1 ; k <= j; ++k)
     {
@@ -435,7 +435,7 @@ int partition_random(int *arr, int i, int j) {
             swap (arr[k], arr[m]); // swap that higher than p value with the potential pivot
         }
     }
-    return m;
+    return m; // Returns midpoint
 }
 
 

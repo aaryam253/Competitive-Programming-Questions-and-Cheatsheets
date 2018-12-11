@@ -37,14 +37,6 @@ private:
                 maxHeapify(2*index+1, maxSize);
             }
         }
-        // This is redundant, left child cannot exist when right child does not exist 
-        else if (2*index+2 < maxSize) {
-            // Right child exist
-            if (heap[2*index+2] > heap[index]) {
-                swap(heap[index], heap[2*index+2]);
-                maxHeapify(2*index+2, maxSize);
-            }
-        }
         else {
             // No child left
             return;
