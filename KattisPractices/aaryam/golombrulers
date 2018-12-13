@@ -1,0 +1,71 @@
+#include <iostream>
+#include <map>
+#include <set>
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
+#include <sstream>
+#include <iterator>
+#include <string>
+#include <queue>
+#include <stack>
+#include <bitset>
+#include <algorithm>
+#include <cmath>
+#include <utility>
+#define LSOne(S) (S & (-S))
+#define INTMAX 99999999
+using namespace std;
+
+typedef unsigned long long ull;
+typedef pair<int, string> ps;
+typedef pair<int, int> p;
+typedef pair<double, double> pd;
+typedef long long ll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+typedef vector<vector<int>> vii;
+typedef vector<vector<ll>> vvll;
+typedef priority_queue<int, vector<int>, greater<>> pqmin;
+
+int main() {
+    string line;
+    
+    while (getline(cin, line)) {
+        istringstream iss(line);
+        
+        string num; vector<int> nums;
+        while (iss >> num) {
+            int number = stoi(num);
+            nums.push_back(number);
+        }
+        
+        sort(nums.begin(), nums.end());
+        vector<int> found(nums.back()+1, 0);
+        
+        bool ruler = true;
+        for (int i = 0; i < nums.size(); i++) {
+            for (int j = i + 1; j < nums.size(); j++) {
+                if (found[nums[j] - nums[i]]) ruler = false;
+                found[nums[j] - nums[i]] = 1;
+            }
+        }
+        
+        if (!ruler) {cout << "not a ruler" << endl; continue;}
+        
+        bool perfect = true;
+        for (int i = 1; i <= nums.back(); i++) {
+            if (found[i] == 0) {
+                cout << "missing ";
+                for (int j = 1; j <= nums.back(); j++) {
+                    if (found[j] == 0) cout << j << " ";
+                } cout << endl; perfect = false; break;
+            }
+        }
+        
+        if (perfect) cout << "perfect" << endl;
+        
+    }
+
+    return 0;
+}
