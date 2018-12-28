@@ -718,3 +718,34 @@ void dfs_handler () {
 // Note there are inifnite paths in a graph with cycle
 // We can also use BFS to count number of paths to a point 
 
+// A generic LIS (Longest Increasing Subsequence) code, which finds the size of the LIS starting at indices i, ∀ i ∈ [0, n-1]
+void calculate_LIS(int arr[], int n) {
+     vector<int> lis(n, 1); // stores all LIS values, initialise all values with 1 as each element is an LIS of size 1
+     for (int i = n-1; i >= 0; i--) {
+             for (int j = i+1; j < n; j++) {
+                     if (arr[i] > arr[j] && lis[i] < lis[j] + 1) lis[i] = lis[j] + 1;
+             }
+     }
+}
+
+// A generic LDS (Longest Decreasing Subsequence) code, which finds the size of the LDS starting at indices i, ∀ i ∈ [0, n-1]
+void calculate_LDS(int arr[], int n) {
+     vector<int> lds(n, 1); // stores all LDS values, initialise all values with 1 as each element is an LDS of size 1
+     for (int i = n-1; i >= 0; i--) {
+             for (int j = i+1; j < n; j++) {
+                     if (arr[i] < arr[j] && lds[i] < lds[j] + 1) lds[i] = lds[j] + 1;
+             }
+     }
+}
+
+// Code to generate LBS (Longest Bitonic Subsequence) __--``--__ OR ``--__--`` (Hill or valley style subsequence)
+void calculate_LBS(int arr[], int n) {
+        vector<int> lis(n, 1); // assume LIS values have been calculated ∀ i ∈ [0, n-1]
+        vector<int> lds(n, 1); // assume LDS values have been calculated ∀ i ∈ [0, n-1]
+        
+        // LBS is defined as max(LIS(i) + LDS(i) - 1), ∀ i ∈ [0, n-1]
+        int lbs = 0;
+        for (int i = 0; i < n; i++) {
+                lbs = max(lbs, lis[i] + lds[i] - 1);
+        }
+}
