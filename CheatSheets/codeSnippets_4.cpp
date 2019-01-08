@@ -109,3 +109,41 @@ bool isMajority(int a[], int size, int cand) {
 } 
 
 
+// String addition (no integers involved)
+string addUp (string input1, string input2) {
+    size_t n = max(input1.size(), input2.size());
+    if (n > input1.size())
+        input1 = string(n-input1.size(), '0') + input1;
+    if (n > input2.size())
+        input2 = string(n-input2.size(), '0') + input2;
+    
+    string result(n+1, '0');
+    
+    char carry = 0;
+    
+    std::transform(input1.rbegin(),input1.rend(),input2.rbegin(),
+                   result.rbegin(),[&carry]( char x,  char y){
+                       char z = (x-'0')+(y-'0') + carry;
+                       if (z > 9)
+                       {
+                           carry = 1;
+                           z -= 10;
+                       }
+                       else
+                       {
+                           carry = 0;
+                       }
+                       return z + '0';
+                   });
+    
+    result[0] = carry + '0';
+    
+    n = result.find_first_not_of("0");
+    if (n != string::npos)
+    {
+        result = result.substr(n);
+    }
+    
+    return result;
+}
+
