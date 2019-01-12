@@ -86,6 +86,7 @@ int main () {
 
 /**
  * Kadane's algorithm - 1D array
+ * Used to find the maximum sum of CONTINUOUS elements of a 1D array
  * Time complexity: O(n)
 */
 
