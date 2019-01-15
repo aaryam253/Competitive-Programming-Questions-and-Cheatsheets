@@ -147,3 +147,142 @@ string addUp (string input1, string input2) {
     return result;
 }
 
+// Find min swaps in an array, swaps need not be adjacent to each other
+
+int minSwaps(int arr[], int n) 
+{ 
+    // Create an array of pairs where first 
+    // element is array element and second element 
+    // is position of first element 
+    pair<int, int> arrPos[n]; 
+    for (int i = 0; i < n; i++) 
+    { 
+        arrPos[i].first = arr[i]; 
+        arrPos[i].second = i; 
+    } 
+  
+    // Sort the array by array element values to 
+    // get right position of every element as second 
+    // element of pair. 
+    sort(arrPos, arrPos + n); 
+  
+    // To keep track of visited elements. Initialize 
+    // all elements as not visited or false. 
+    vector<bool> vis(n, false); 
+  
+    // Initialize result 
+    int ans = 0; 
+  
+    // Traverse array elements 
+    for (int i = 0; i < n; i++) 
+    { 
+        // already swapped and corrected or 
+        // already present at correct pos 
+        if (vis[i] || arrPos[i].second == i) 
+            continue; 
+  
+        // find out the number of  node in 
+        // this cycle and add in ans 
+        int cycle_size = 0; 
+        int j = i; 
+        while (!vis[j]) 
+        { 
+            vis[j] = 1; 
+  
+            // move to next node 
+            j = arrPos[j].second; 
+            cycle_size++; 
+        } 
+  
+        // Update answer by adding current cycle.  
+        if (cycle_size > 0) 
+        { 
+            ans += (cycle_size - 1); 
+        } 
+    } 
+  
+    // Return result 
+    return ans; 
+} 
+
+
+// Count number of swaps in O(NlogN), only adjacent swaps are allowed
+
+long long swaps = 0;
+
+void merge(long long arr[], int l, int m, int r)
+{
+    int i, j, k;
+    int n1 = m - l + 1;
+    int n2 =  r - m;
+    
+    /* create temp arrays */
+    long long L[n1], R[n2];
+    
+    /* Copy data to temp arrays L[] and R[] */
+    for (i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (j = 0; j < n2; j++)
+        R[j] = arr[m + 1+ j];
+    
+    /* Merge the temp arrays back into arr[l..r]*/
+    i = 0; // Initial index of first subarray
+    j = 0; // Initial index of second subarray
+    k = l; // Initial index of merged subarray
+    
+    while (i < n1 && j < n2)
+    {
+        if (L[i] <= R[j])
+        {
+            
+            arr[k] = L[i];
+            i++;
+        }
+        else
+        {
+            swaps += n1 - i; // Swap with the remaining guys from the first side*********
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+    
+    /* Copy the remaining elements of L[], if there
+     are any */
+    while (i < n1)
+    {
+//        swaps++;
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+    
+    /* Copy the remaining elements of R[], if there
+     are any */
+    while (j < n2)
+    {
+//        swaps++;
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+/* l is for left index and r is right index of the
+ sub-array of arr to be sorted */
+void mergeSort(long long arr[], int l, int r)
+{
+    if (l < r)
+    {
+        // Same as (l+r)/2, but avoids overflow for
+        // large l and h
+        int m = l+(r-l)/2;
+        
+        // Sort first and second halves
+        mergeSort(arr, l, m);
+        mergeSort(arr, m+1, r);
+        
+        merge(arr, l, m, r);
+    }
+}
+
