@@ -286,3 +286,7 @@ void mergeSort(long long arr[], int l, int r)
     }
 }
 
+// To set a precision point eg. 2 decimal placing
+
+cout << fixed << setprecision(2) << y << endl;
+
