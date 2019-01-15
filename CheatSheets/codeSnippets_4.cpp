@@ -20,7 +20,7 @@ int countPaths () {
             if (added_weight[it.second] > added_weight[current] + it.first) {
                 
                 added_weight[it.second] = (added_weight[current] + it.first);
-                ways[it.second] = ways[current]; // Replace replace with the true shortest path is combined weight is smaller
+                ways[it.second] = ways[current]; // Replace replace with the true shortest path if combined weight is smaller
                 q.insert(make_pair(added_weight[it.second], it.second));
 
             } else if (added_weight[it.second] == added_weight[current] + it.first) {
@@ -289,4 +289,91 @@ void mergeSort(long long arr[], int l, int r)
 // To set a precision point eg. 2 decimal placing
 
 cout << fixed << setprecision(2) << y << endl;
+
+
+// Linear Algorithms and examples - For Mini 01
+
+// 1. Bracket Matching (Use a stack) - O(n)
+/* function to check if paranthesis are balanced
+    in any string expression */
+bool isBalanced(string expression) {
+    stack<char> s;
+    char x;
+
+    // scan through expression
+    for (int i = 0; i < expression.length(); i++) {
+        if (expression[i]=='('||expression[i]=='['||expression[i]=='{') {
+            // push element in stack
+            s.push(expression[i]);
+            continue;
+        }
+        // If current character is not opening bracket, it must be a 
+        // closing bracket. So stack cannot be empty at this point
+        switch(expression[i]) {
+            case ')':
+                // check whether top of stack is pair of current closing bracket
+                x = s.top();
+                s.pop();
+                if (x == '{' || x == '[') return false;
+                break;
+
+            case ']':
+                // check whether top of stack is pair of current closing bracket
+                x = s.top();
+                s.pop();
+                if (x == '{' || x == '(') return false;
+                break;
+
+            case '}':
+                // check whether top of stack is pair of current closing bracket
+                x = s.top();
+                s.pop();
+                if (x == '[' || x == '(') return false;
+                break;
+        }
+    }
+
+    // check whether stack is empty -- if no. of characters is odd, cannot be balanced anyway
+    return (s.empty());
+}
+
+// 2. Inversion Index - O(n log n)
+
+
+
+// 3. Postfix Calculator and Conversion (Shunting yard)
+
+
+
+
+// 4. (Static) Selection Problem
+
+
+
+
+// 5. Sorting in Linear Time
+
+
+
+
+// 6. Sliding Window
+
+
+
+
+// 7. Max 1D Range Sum/Kadane's Algorithm
+
+
+
+
+// 8. LIS - O(n log k)
+
+
+
+
+// 9. Graham Scan's algorithm
+
+
+
+
 
