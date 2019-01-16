@@ -303,7 +303,6 @@ int lcm(int a, int b) {
     return a / gcd(a,b) * b;
 }
 
-
 // Linear Algorithms and examples - For Mini 01
 
 // 1. Bracket Matching (Use a stack) - O(n)
@@ -351,8 +350,92 @@ bool isBalanced(string expression) {
 }
 
 // 2. Inversion Index - O(n log n)
+/*
+Problem asks for minimum no. of bubble sorts swaps required to make a list sorted. Can be done by modifying
+merge sort. 
 
+(i) If the front of the right sorted sublist is taken first rather than the front of the left sorted sublist,
+we say that 'inversion occurs'. 
+(ii) Add inversion index counter by the size of the current left sublist
+*/
 
+long long swaps = 0;
+
+void merge(long long arr[], int l, int m, int r)
+{
+    int i, j, k;
+    int n1 = m - l + 1;
+    int n2 =  r - m;
+    
+    /* create temp arrays */
+    long long L[n1], R[n2];
+    
+    /* Copy data to temp arrays L[] and R[] */
+    for (i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (j = 0; j < n2; j++)
+        R[j] = arr[m + 1+ j];
+    
+    /* Merge the temp arrays back into arr[l..r]*/
+    i = 0; // Initial index of first subarray
+    j = 0; // Initial index of second subarray
+    k = l; // Initial index of merged subarray
+    
+    while (i < n1 && j < n2)
+    {
+        if (L[i] <= R[j])
+        {
+            
+            arr[k] = L[i];
+            i++;
+        }
+        else
+        {
+            swaps += n1 - i; // Swap with the remaining guys from the first side*********
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+    
+    /* Copy the remaining elements of L[], if there
+     are any */
+    while (i < n1)
+    {
+//        swaps++;
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+    
+    /* Copy the remaining elements of R[], if there
+     are any */
+    while (j < n2)
+    {
+//        swaps++;
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+/* l is for left index and r is right index of the
+ sub-array of arr to be sorted */
+void mergeSort(long long arr[], int l, int r)
+{
+    if (l < r)
+    {
+        // Same as (l+r)/2, but avoids overflow for
+        // large l and h
+        int m = l+(r-l)/2;
+        
+        // Sort first and second halves
+        mergeSort(arr, l, m);
+        mergeSort(arr, m+1, r);
+        
+        merge(arr, l, m, r);
+    }
+}
 
 // 3. Postfix Calculator and Conversion (Shunting yard)
 
