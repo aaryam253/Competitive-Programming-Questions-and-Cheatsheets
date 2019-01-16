@@ -38,8 +38,9 @@ void SieveOfEratosthenes(int n)
     // Create a boolean array "prime[0..n]" and initialize 
     // all entries it as true. A value in prime[i] will 
     // finally be false if i is Not a prime, else true. 
-    bool prime[n+1]; 
-    memset(prime, true, sizeof(prime)); 
+
+    //NOTE: Change to vector as a boolean array can give MLE...
+    vector<bool> prime(n+1, true);
   
     for (int p=2; p*p<=n; p++) 
     { 
@@ -289,6 +290,18 @@ void mergeSort(long long arr[], int l, int r)
 // To set a precision point eg. 2 decimal placing
 
 cout << fixed << setprecision(2) << y << endl;
+
+// Finding GCD and LCM of numbers a and b --> Runs in O(log n) where n = max(a,b)
+
+/*GCD of more than two numbers have be found by calling gcd multiple times
+  e.g. gcd(a,b,c) = gcd(a, gcd(b,c)) */
+int gcd(int a, int b) {
+    return b == 0 ? a : gcd(b, a%b);
+}
+
+int lcm(int a, int b) {
+    return a / gcd(a,b) * b;
+}
 
 
 // Linear Algorithms and examples - For Mini 01
