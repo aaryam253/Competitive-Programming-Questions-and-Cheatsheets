@@ -470,6 +470,79 @@ void mergeSort(long long arr[], int l, int r)
 // 9. Graham Scan's algorithm
 
 
+// Convert string to mintues or minutes to time
+
+int clockConvert (string input, bool am) {
+    if (input == "noon") {
+        return 12*60;
+    } else if (input == "midnight") {
+        return 0;
+    }
+    
+    if (am) {
+        istringstream iss (input);
+        string token;
+        vector<string> tokens;
+        while (getline(iss, token, ':')) {
+            tokens.push_back(token);
+        }
+        
+        if (tokens[0] == "12") {
+            return 0 + stoi(tokens[1]);
+        }
+        return stoi(tokens[0])*60 + stoi(tokens[1]);
+    } else {
+        istringstream iss (input);
+        string token;
+        vector<string> tokens;
+        while (getline(iss, token, ':')) {
+            tokens.push_back(token);
+        }
+        
+        if (tokens[0] == "12") {
+            return 12*60 + stoi(tokens[1]);
+        }
+        return (stoi(tokens[0])+12)*60 + stoi(tokens[1]);
+    }
+}
+
+string minutesToClock(int minutes) {
+    minutes %= (24*60);
+    if (minutes == 12*60) {
+        return "noon";
+    } else if (minutes == 0) {
+        return "midnight";
+    }
+    
+    int hours = minutes/60;
+    int minutes_ = minutes%60;
+    if (hours >= 12) {
+        if (hours != 12)
+            hours -= 12;
+        string output = to_string(hours);
+        output += ":";
+        if (minutes_ < 10) {
+            output += '0';
+        }
+        output += to_string(minutes_);
+
+        output += " p.m.";
+        return output;
+    } else {
+        string output = to_string(hours);
+        if (hours == 0) {
+            output = to_string(12);
+        }
+        output += ":";
+        if (minutes_ < 10) {
+            output += '0';
+        }
+        output += to_string(minutes_);
+        
+        output += " a.m.";
+        return output;
+    }
+}
 
 
 

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <list>
 #include <vector>
+#include <queue>
 
 #define MAX 16000
 
@@ -37,7 +38,7 @@ int main () {
     int arr_t[16000] = {0};
     
     
-    printf("1: bubblesort\n2: insertion sort\n3: selection sort\n4: Enhanced bubblesort\n5: Shaker sort\n6: Insertion sort v2\n7: Merge sort\n8: Quick Sort\n9: Random quick sort\n10: Counting sort\n11: Radix sort\n12: Radix sort (Wilson's ver)\n13: Enhanced enhanced bubblesort (Aaryam's ver)\n");
+    printf("1: bubblesort\n2: insertion sort\n3: selection sort\n4: Enhanced bubblesort\n5: Shaker sort\n6: Insertion sort v2\n7: Merge sort\n8: Quick Sort\n9: Random quick sort\n10: Counting sort\n11: Radix sort\n12: Radix sort (Bucket's ver)\n13: Enhanced enhanced bubblesort (Aaryam's ver)\n");
     
     printf("What sort you want?: ");
     scanf("%d", &choice);
@@ -131,7 +132,7 @@ int main () {
             printf("-----O(n)-----\n");
             break;
         case 12:
-            printf("Radix sort (Wilson's ver) selected\n");
+            printf("Radix sort (Bucket's ver) selected\n");
             printf("size 16000 : %d \n", radixSort_2(arr_t, 16000, 0));
             printf("-----O(n)-----\n");
             break;
@@ -460,36 +461,59 @@ int quickSort_rand (int *arr, int lowestIndex, int highestIndex) {
 /* -------------------------------- Beginning of non compare type sorting techniques -------------------------------- */
 
 /**
- Pros: Constant O(N), worst case O(N^2)
+ Pros: Close to O(N)
  Cons: Not memory efficient, need to know largest number and can only be done for +ve numbers
+ Time complexity: O(n + k) k number of unique elements
  */
 
-int countingSort (int* arr, int n, int max) {
+int countingSort(int arr[], int size, int range) {
     clock_t start, finish;
     start = clock();
     
-    int count[16000] = {0};
-    for (int i = 0; i < n; ++i)
+    // The output integer array that will have sorted arr
+    int output[size];
+    
+    // Create a count array to store count of inidividual
+    // integers and initialize count array as 0
+    
+    // means the range is only up to 1000 MAKE SURE TO CHANGE THIS AMOUNT TO WHAT YOU NEED
+    int count[1000 + 1] = {};
+    int i;
+    
+    // Store count of each number
+    for(i = 0; i < size; ++i)
+        count[arr[i]]++;
+    
+    // Change count[i] so that count[i] now contains actual
+    // position of this integers in output array
+    for (i = 1; i <= range; ++i)
+        count[i] += count[i-1];
+    
+    // Build the output integer array
+    for (i = 0; i < size; ++i)
     {
-        count[arr[i]] += 1;
+        output[count[arr[i]]-1] = arr[i];
+        --count[arr[i]];
     }
-    int index = 0;
-    for (int i = 0; i <= max; ++i)
+    
+    // To make it stable
+    for (i = size-1; i>=0; --i)
     {
-        while (count[i]) {
-            count[i]--;
-            arr[index++] = i;
-        }
+        output[count[arr[i]]] = arr[i];
+        --count[arr[i]];
     }
+    
+    // Copy the output array to arr, so that arr now
+    // contains the sorted integers
+    for (i = 0; i < size; ++i)
+        arr[i] = output[i];
     
     finish = clock();
     return (int)(finish-start);
 }
 
-/**
- Pros: Constant O(N)
- Cons: Not memory efficient, need to know largest number and can only be done for +ve numbers
- */
+
+
 
 void countSort(int arr[], int n, int exp)
 {
@@ -518,6 +542,10 @@ void countSort(int arr[], int n, int exp)
         arr[i] = output[i];
 }
 
+/**
+ Time complexity: O(dN) d is the max number of digits - so worst case can potentially be O(N^2)
+ Radixsort uses countSort as an aux sort technique
+ */
 int radixsort(int arr[], int n, int m)
 {
     clock_t start, finish;
@@ -534,7 +562,7 @@ int radixsort(int arr[], int n, int m)
 
 
 
-// Radix sort, Wilson's version, using FIFO
+// Radix sort, Bucket's version, using FIFO
 
 void countingSort_2 (int* arr, int n, int exp) {
     list<int> count[10]; // There exists only 10 possible lists from 0 - 9
@@ -637,7 +665,7 @@ void heap_sort (vector<int> *myVector) {
 
 
 
-// Counting sort with bucket 
+// Counting sort with bucket
 // This function sorts a string with its index in order
 
 vector<pair<char, int>> countingSort (string input, int n, int max) {
@@ -674,32 +702,30 @@ vector<pair<char, int>> countingSort (string input, int n, int max) {
  For some quick thinking tips:
  
  (num comparisons)***** - hardest
- 1. Bubble sort num comparisons = (n-1)(n/2) iff no breaks else find out at which pass it broke. 
+ 1. Bubble sort num comparisons = (n-1)(n/2) iff no breaks else find out at which pass it broke.
  2. Selection sort = n + n-1 + n-2 + ... + 1
  3. Insertion sort (with break;)
-    Steps: 
-    1. Identify first one from the left that needs to swap, 
-    2. If (number does not shift to back most) Count number of indexes it needs to travel + 1 
-    3. Else count number of indexes to the last one 
-    4. The rest except (0th index) give it 1 comparison 
-  
-
-  
+ Steps:
+ 1. Identify first one from the left that needs to swap,
+ 2. If (number does not shift to back most) Count number of indexes it needs to travel + 1
+ 3. Else count number of indexes to the last one
+ 4. The rest except (0th index) give it 1 comparison
+ 
+ 
+ 
  (num swaps)
  1. If an array is ordered, zero swaps will be made for all comparison based sorting algos
  2. As for others, its best to analyse one by one.
  
  
  (content of array after n passes)
- 1. Bubble sort - have to manually trace 
+ 1. Bubble sort - have to manually trace
  2. Selection sort - draw a line at the last index to be sorted, trace from start to there (swap necessarily)
  3. Insertion sort - draw a line at the last index to be sorted, all those before this line will be sorted properly
-
-
+ 
+ 
  (num possible pivots on first pass - quicksort)
- Look at each number carefully, pivots can only have left side all smaller than itself and right side all bigger or equals to itself. 
+ Look at each number carefully, pivots can only have left side all smaller than itself and right side all bigger or equals to itself.
  
  
  */
-
-

@@ -16,7 +16,7 @@ int main () {
     
     // Setting bits
     a = 0;
-    a |= 1<<3; // Set the bit at index = 3 to 1 (0-based indexing)
+    a |= 1<<3; // Set the bit at index = 3 to 1 (0-based indexing), aka 2^3
     cout << a << endl;
     
     // Checking if bit is turned on
@@ -42,4 +42,7 @@ int main () {
     int n = 31; // 32 bit integer
     b = (1<<n) - 1;
     cout << b << endl; // we get int max
+
+    // Using bit manipulation to get powers of 2
+    cout << (1<<3) << endl; // 2^3 = 8
 }
