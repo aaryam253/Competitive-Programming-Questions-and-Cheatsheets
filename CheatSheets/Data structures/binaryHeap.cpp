@@ -12,7 +12,7 @@ private:
     
     
     // Recursive
-    void maxHeapify (int index, int maxSize) {
+    void bubbleDown (int index, int maxSize) {
         // Compare childs
         if (2*index+1 < heap.size() && 2*index+2 < maxSize) {
             // Both child exist
@@ -20,13 +20,13 @@ private:
                 // Left child larger than right child
                 if (heap[2*index+1] > heap[index]) {
                     swap(heap[index], heap[2*index+1]);
-                    maxHeapify(2*index+1, maxSize);
+                    bubbleDown(2*index+1, maxSize);
                 }
             }else {
                 // Left child smaller or equals to right child
                 if (heap[2*index+2] > heap[index]) {
                     swap(heap[index], heap[2*index+2]);
-                    maxHeapify(2*index+2, maxSize);
+                    bubbleDown(2*index+2, maxSize);
                 }
             }
         }
@@ -34,7 +34,7 @@ private:
             // Left child exist
             if (heap[2*index+1] > heap[index]) {
                 swap(heap[index], heap[2*index+1]);
-                maxHeapify(2*index+1, maxSize);
+                bubbleDown(2*index+1, maxSize);
             }
         }
         else {
@@ -43,12 +43,12 @@ private:
         }
         
     }
-    void shiftDown (int index) {
+    void bubbleUp (int index) {
         // Compare parent
         if (heap[index] > heap[(index-1)/2]) {
             // more than parent
             swap(heap[index], heap[(index-1)/2]);
-            shiftDown((index-1)/2);
+            bubbleUp((index-1)/2);
         }else {
             return;
         }
@@ -65,7 +65,7 @@ public:
     
     void insert (int value) {
         heap.push_back(value);
-        shiftDown(heap.size() - 1);
+        bubbleUp(heap.size() - 1);
     }
     
     int top () {
@@ -77,7 +77,7 @@ public:
         swap(heap[0], heap[heap.size() - 1]);
         heap.erase(--heap.end());
         if (heap.empty()) return;
-        maxHeapify(0, heap.size());
+        bubbleDown(0, heap.size());
     }
     
     void printVector () {
@@ -97,27 +97,27 @@ public:
     void buildHeap (vector<int> myVector) {
         heap = myVector;
         for (int i = heap.size()/2; i >= 0; i--) {
-            maxHeapify(i, heap.size()); // uses maxHeapify, basically start from the first half of the array and heapify from there
+            bubbleDown(i, heap.size()); // uses maxHeapify, basically start from the first half of the array and heapify from there
             // O(N)
         }
     }
     /*
-        1. Remove all the leaf nodes
-        2. start from the last parent, bubble down/ maxHeapify 
-        3. Do until the first element (index = 0)
-    */
+     1. Remove all the leaf nodes
+     2. start from the last parent, bubble down/ maxHeapify
+     3. Do until the first element (index = 0)
+     */
     
     void heap_sort (vector<int> *myVector) {
         heap = *myVector;
         buildHeap(heap);
         for (int i = 0; i < myVector->size() ; i++) {
             swap(heap[0], heap[heap.size()-1 - i]);
-            maxHeapify(0, heap.size()-1 - i);
+            bubbleDown(0, heap.size()-1 - i);
         }
         
         *myVector = heap;
     }
-
+    
     // DFS
     void find_elements_above (int k, int index) {
         if (index >= heap.size()) return; // So it does not traverse out of array
