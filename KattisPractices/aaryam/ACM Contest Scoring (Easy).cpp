@@ -1,11 +1,3 @@
-//
-//  main.cpp
-//  3D Printed Statues
-//
-//  Created by Aaryam Srivastava on 24/1/2018.
-//  Copyright © 2018 LearnAppMaking. All rights reserved.
-//
-
 #include <iostream>
 #include <unordered_set>
 #include <unordered_map>
